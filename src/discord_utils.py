@@ -42,11 +42,11 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
     await message.channel.send(embed=embed)
 
 
-async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
+async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_URL):
     embed = discord.Embed(title=title,
                           description=desc,
                           colour=BOT_COLOR,
-                          url=HOWTO_URL)
+                          url=url)
 
     await message.channel.send(embed=embed)
 
