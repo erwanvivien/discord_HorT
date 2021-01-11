@@ -45,5 +45,5 @@ $hartspec sub_name [nb] [show] [novideo] [bad/good]     # with (1 <= nb <= 10)
 
 HOW TO:
 ```bash
-$add good/bad sub_name
+$hartadd good/bad sub_name
 ```
