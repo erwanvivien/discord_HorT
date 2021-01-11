@@ -48,6 +48,7 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
                           description=desc,
                           colour=ERROR_COLOR,
                           url=HOWTO_URL)
+
     await message.channel.send(embed=embed)
 
 
@@ -55,7 +56,7 @@ async def horts(self, message, args):
     try:
         nb = int(args[0])
     except:
-        return error_message(message, title="Wrong usage", desc="1st argument must be an integer")
+        return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
 
     while nb > 0:
         hort(self, message, args)
@@ -64,14 +65,22 @@ async def horts(self, message, args):
 
 async def hort_lim(self, message, args):
     try:
-        nb = int(args[0])
+        await hort(self, message, args, int(args[0]))
     except:
-        return error_message(message, title="Wrong usage", desc="1st argument must be an integer")
-
-    await hort(self, message, args, nb)
+        return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
 
 
-async def hort(self, message, args, limit=30):
+async def hort_spec(self, message, args):
+    try:
+        return await hort(self, message, args, int(args[1]), args[0])
+    except:
+        try:
+            return await hort(self, message, args, int(args[0]), args[1])
+        except:
+            return await hort(self, message, args, 30, args[0])
+
+
+async def hort(self, message, args, limit=30, subreddit=None):
     show_subreddit = (args != None) and ("show" in args)
 
     is_bad = (args != None) and ("bad" in args)
@@ -86,10 +95,17 @@ async def hort(self, message, args, limit=30):
         good_or_bad = GOD_REDDIT
 
     while True:
-        subreddit = random.choice(good_or_bad)
+        subreddit = random.choice(
+            good_or_bad) if subreddit == None else subreddit
         js = subreddit_json(subreddit)
 
-        post_data = await get(js, args)
+        posts, post_data = await get(js, args)
+
+        # print(posts)
+        if posts["dist"] == 0:
+            return await error_message(message,
+                                       title="Something went wrong",
+                                       desc=f"SubReddit '{subreddit}' was not found")
         if not post_data:
             continue
 
@@ -112,12 +128,12 @@ async def get(js, args=None):
         post = posts[post_nb]
         post_data = post["data"]
     except:
-        return None
+        return js["data"], None
     # print(post)
 
     if show_novideos and post_data["is_video"]:
-        return None
+        return posts, None
     if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
-        return None
+        return posts, None
 
-    return post_data
+    return js["data"], post_data
