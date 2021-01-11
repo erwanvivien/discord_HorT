@@ -8,42 +8,57 @@ A Heads or Tails discord bot
 - [``$hartspec``](https://github.com/erwanvivien/discord-HorT#Specific-results-from-any-SubReddit)
 - [``$add`` or ``$remove``](https://github.com/erwanvivien/discord-HorT#Add-or-remove-from-list-of-SubReddits)
 
-### Default command
+
+
+- Default command
+
 ``$hart`` or ``$hort`` for a simple heads or tails situation (they are the same)
 
-All the possible parameters
+HOW TO USE:
 ```
 $hart [show] [novideo] [bad/good]
 ```
 
-### Multiple draws
+
+
+- Multiple draws
+
 ``$harts`` or ``$horts`` for many heads or tails situations (same again)
 
-All the possible parameters
+HOW TO USE:
 ```bash
 $harts nb [show] [novideo] [bad/good]     # with (1 <= nb <= 10)
 ```
 
-### More results if not satisfied
+
+
+- More results if not satisfied
+
 ``$hartlim`` or ``$hortlim`` for more results (equivalent to ``$hart``, takes longer)
 
-All the possible parameters
+HOW TO USE:
 ```bash
 $hartlim nb [show] [novideo] [bad/good]     # with (1 <= nb <= 100)
 ```
 
-### Specific results from any SubReddit
+
+
+- Specific results from any SubReddit
+
 ``$hartspec`` or ``$hortspec`` for results in a specific SubReddit (equivalent to ``$hartlim``)
 
-All the possible parameters
+HOW TO USE:
 ```bash
 $hartspec sub_name [nb] [show] [novideo] [bad/good]     # with (1 <= nb <= 10)
 ```
 
-### Add or remove from list of SubReddits
+
+
+- Add or remove from list of SubReddits
+
 ``$add`` or ``$remove`` for more results 
 
-All the possible parameters
+HOW TO USE:
 ```bash
 $add good/bad sub_name
 ```
