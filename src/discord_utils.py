@@ -15,8 +15,8 @@ BAD_REDDIT = [
     "trashy", "poop", "UnderTail", "cursedimages", "FearMe",
     "creepy", "WTF", "MakeMeSuffer", "buttsharpies",
     "dragonfuckingcars", "SubwayCreatures",
-    "rule34", "disturbingpics", "DiWHY", "femalepov",
-    "hentai", "cursedcursedimages"
+    "rule34", "disturbingpics", "femalepov",
+    "hentai", "cursedcursedimages", "trashyboners"
 ]
 
 GOD_REDDIT = [
@@ -24,8 +24,11 @@ GOD_REDDIT = [
     "wholesomememes", "wtfstockphotos", "FoodPorn",
     "FiftyFifty", "Celebswithbigtits", "PerfectTiming",
     "2busty2hide", "natureporn", "HungryButts",
-    "Minecraft", "goddesses", "BeautifulFemales"
+    "Minecraft", "goddesses", "BeautifulFemales",
+    "OnOff", "RealGirls", "tanlines", "fuckyeahdrunksluts",
+    "unexpectedtitty"
 ]
+
 
 REDDIT = [BAD_REDDIT, GOD_REDDIT]
 
