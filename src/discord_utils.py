@@ -1,6 +1,6 @@
 import discord
 import random
-from utils import subreddit_json
+from utils import subreddit_json, get_content
 
 WRONG_USAGE = "Something went wrong"
 HELP_USAGE = "Please see $horthelp"
@@ -11,23 +11,9 @@ ERROR_COLOR = discord.Colour(0xff0000)
 WARN_COLOR = discord.Colour(0xebdb34)
 VALID_COLOR = discord.Colour(0x55da50)
 
-BAD_REDDIT = [
-    "trashy", "poop", "UnderTail", "cursedimages", "FearMe",
-    "creepy", "WTF", "MakeMeSuffer", "buttsharpies",
-    "dragonfuckingcars", "SubwayCreatures",
-    "rule34", "disturbingpics", "femalepov",
-    "hentai", "cursedcursedimages", "trashyboners"
-]
 
-GOD_REDDIT = [
-    "lovepics", "aww", "AnimalsBeingBros", "BiggerThanYouThought",
-    "wholesomememes", "wtfstockphotos", "FoodPorn",
-    "FiftyFifty", "Celebswithbigtits", "PerfectTiming",
-    "2busty2hide", "natureporn", "HungryButts",
-    "Minecraft", "goddesses", "BeautifulFemales",
-    "OnOff", "RealGirls", "tanlines", "fuckyeahdrunksluts",
-    "unexpectedtitty"
-]
+GOD_REDDIT = get_content("good").split('\n')
+BAD_REDDIT = get_content("bad").split('\n')
 
 
 REDDIT = [BAD_REDDIT, GOD_REDDIT]
