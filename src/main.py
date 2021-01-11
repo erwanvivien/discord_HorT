@@ -1,9 +1,16 @@
 # need to do :
 import discord
 from discord.ext import commands
-from utils import get_content
-from discord_utils import author_name, error_message
-from discord_utils import hort, horts, hort_lim, hort_spec
+
+# from utils import get_content
+# from discord_utils import author_name, error_message
+
+# from discord_utils import hort, horts, hort_lim, hort_spec
+# from utils import add
+
+
+import discord_utils
+import utils
 
 # from discord_utils import hort
 
@@ -21,20 +28,23 @@ DISC_LNK = 'https://discord.com/api/oauth2/authorize?client_id=79813011649134597
 prefix = "$hort"
 
 # Discord bot token
-token = get_content("token")
+token = utils.get_content("token")
 
 CMDS = {
-    "$hart": hort,
-    "$hort": hort,
+    "$hart": discord_utils.hort,
+    "$hort": discord_utils.hort,
 
-    "$harts": horts,
-    "$horts": horts,
+    "$harts": discord_utils.horts,
+    "$horts": discord_utils.horts,
 
-    "$hortlim": hort_lim,
-    "$hartlim": hort_lim,
+    "$hortlim": discord_utils.hort_lim,
+    "$hartlim": discord_utils.hort_lim,
 
-    "$hartspec": hort_spec,
-    "$hartspec": hort_spec,
+    "$hartspec": discord_utils.hort_spec,
+    "$hartspec": discord_utils.hort_spec,
+
+    "$add": utils.add,
+    "$remove": utils.remove,
 }
 
 
@@ -59,7 +69,7 @@ class Client(discord.Client):
         cmd = split[0].lower()
         args = split[1].split(' ') if len(split) > 1 else None
 
-        name = author_name(message.author)
+        name = discord_utils.author_name(message.author)
 
         if cmd in CMDS:
             print(f"{name} issued {cmd} command. <{args}>")
