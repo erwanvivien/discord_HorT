@@ -1,5 +1,6 @@
 import discord
 import random
+from utils import subreddit_json
 
 WRONG_USAGE = "Something went wrong"
 HELP_USAGE = "Please see $horthelp"
@@ -38,3 +39,26 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
                           colour=ERROR_COLOR,
                           url=HOWTO_URL)
     await message.channel.send(embed=embed)
+
+
+async def hort(self, message, args):
+    post = None
+    good_or_bad = random.choice(REDDIT)
+
+    while True:
+        subreddit = random.choice(good_or_bad)
+        js = subreddit_json(subreddit)
+
+        nb_posts = js["data"]["dist"]
+        posts = js["data"]["children"]
+
+        post_nb = random.randrange(nb_posts)
+
+        post = posts[post_nb]
+
+        if post["is_video"]:
+            continue
+
+        break
+
+    await message.channel.send(post["url"])
