@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 from utils import get_content
 from discord_utils import author_name, error_message
-from discord_utils import hort, horts, hort_lim
+from discord_utils import hort, horts, hort_lim, hort_spec
 
 # from discord_utils import hort
 
@@ -32,6 +32,9 @@ CMDS = {
 
     "$hortlim": hort_lim,
     "$hartlim": hort_lim,
+
+    "$hartspec": hort_spec,
+    "$hartspec": hort_spec,
 }
 
 
@@ -63,11 +66,9 @@ class Client(discord.Client):
         # Debugging stuff
         name = author_name(message.author)
 
-        try:
-            await CMDS[cmd](self, message, args)
+        if cmd in CMDS:
             print(f"{name} issued {cmd} command. <{args}>")
-        except:
-            return
+            await CMDS[cmd](self, message, args)
 
         # await hort(self, message, args)
 
