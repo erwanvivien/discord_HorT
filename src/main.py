@@ -43,8 +43,12 @@ CMDS = {
     "$hartspec": discord_utils.hort_spec,
     "$hartspec": discord_utils.hort_spec,
 
-    "$add": utils.add,
-    "$remove": utils.remove,
+    "$hartadd": utils.add,
+    "$hortadd": utils.add,
+    "$hartremove": utils.remove,
+    "$hortremove": utils.remove,
+    "$hartlist": utils.list,
+    "$hortlist": utils.list,
 }
 
 
