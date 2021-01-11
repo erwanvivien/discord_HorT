@@ -1,6 +1,7 @@
 import discord
 import random
-from utils import subreddit_json, get_content
+# from utils import subreddit_json, get_content
+import utils
 
 WRONG_USAGE = "Something went wrong"
 HELP_USAGE = "Please see $horthelp"
@@ -12,8 +13,8 @@ WARN_COLOR = discord.Colour(0xebdb34)
 VALID_COLOR = discord.Colour(0x55da50)
 
 
-GOD_REDDIT = get_content("good").split('\n')
-BAD_REDDIT = get_content("bad").split('\n')
+GOD_REDDIT = utils.get_content("good").split('\n')
+BAD_REDDIT = utils.get_content("bad").split('\n')
 
 
 REDDIT = [BAD_REDDIT, GOD_REDDIT]
@@ -41,9 +42,22 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
     await message.channel.send(embed=embed)
 
 
+async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
+    embed = discord.Embed(title=title,
+                          description=desc,
+                          colour=BOT_COLOR,
+                          url=HOWTO_URL)
+
+    await message.channel.send(embed=embed)
+
+
 async def horts(self, message, args):
     try:
         nb = int(args[0])
+        if nb > 10:
+            nb = 10
+        elif nb < 0:
+            nb = 0
     except:
         return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
 
@@ -86,12 +100,13 @@ async def hort(self, message, args, limit=30, subreddit=None):
     while True:
         subreddit = random.choice(
             good_or_bad) if subreddit == None else subreddit
-        js = subreddit_json(subreddit)
+        js = utils.subreddit_json(subreddit)
 
         posts, post_data = await get(js, args)
 
         # print(posts)
-        if not posts or posts["dist"] == 0:
+        if not posts or ("dist" in posts and posts["dist"] == 0 or
+                         "error" in posts and posts["error"] != 200):
             return await error_message(message,
                                        title="Something went wrong",
                                        desc=f"SubReddit '{subreddit}' was not found")
@@ -119,7 +134,8 @@ async def get(js, args=None):
         post = posts[post_nb]
         post_data = post["data"]
     except:
-        return None, None
+        print(js)
+        return js["data"], None
 
     # print(post)
     if show_novideos and post_data["is_video"]:
