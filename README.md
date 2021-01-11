@@ -2,11 +2,11 @@
 A Heads or Tails discord bot
 
 ## Usages
-- [``$hart``](google.com)
-- ``$harts``
-- ``$hartlim``
-- ``$hartspec``
-- ``$add`` or ``$remove``
+- [``$hart``](https://github.com/erwanvivien/discord-HorT#default-command)
+- [``$harts``](https://github.com/erwanvivien/discord-HorT#Multiple-draws)
+- [``$hartlim``](https://github.com/erwanvivien/discord-HorT#More-results-if-not-satisfied)
+- [``$hartspec``](https://github.com/erwanvivien/discord-HorT#Specific-results-from-any-SubReddit)
+- [``$add`` or ``$remove``](https://github.com/erwanvivien/discord-HorT#Add-or-remove-from-list-of-SubReddits)
 
 ### Default command
 ``$hart`` or ``$hort`` for a simple heads or tails situation (they are the same)
