@@ -12,7 +12,8 @@ WARN_COLOR = discord.Colour(0xebdb34)
 VALID_COLOR = discord.Colour(0x55da50)
 
 BAD_REDDIT = ["trashy", "poop", "UnderTail", "cursedimages", "FearMe",
-              "creepy", "WTF", "MakeMeSuffer"]
+              "creepy", "WTF", "MakeMeSuffer", "buttsharpies",
+              "dragonfuckingcars", "SubwayCreatures"]
 
 GOD_REDDIT = ["lovepics", "aww", "nocontextpics", "AnimalsBeingBros",
               "NatureIsFuckingLit", "wholesomememes", "photoshopbattles"]
@@ -47,6 +48,9 @@ async def hort(self, message, args):
     except:
         nb = 1
 
+    show_subreddit = (args != None) and ("show" in args)
+    show_videos = (args != None) and ("video" in args)
+
     while nb > 0:
         post_data = None
         good_or_bad = random.choice(REDDIT)
@@ -62,14 +66,15 @@ async def hort(self, message, args):
 
             post = posts[post_nb]
             post_data = post["data"]
-            # print(post)
+            print(post)
 
-            if post_data["is_video"]:
+            if not show_videos and post_data["is_video"]:
                 continue
 
             break
 
-        await message.channel.send(post_data["subreddit"])
+        if show_subreddit:
+            await message.channel.send(post_data["subreddit"])
         await message.channel.send(post_data["url"])
 
         nb -= 1
