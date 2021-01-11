@@ -62,7 +62,7 @@ async def horts(self, message, args):
         return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
 
     while nb > 0:
-        hort(self, message, args)
+        await hort(self, message, args)
         nb -= 1
 
 
@@ -105,7 +105,7 @@ async def hort(self, message, args, limit=30, subreddit=None):
         posts, post_data = await get(js, args)
 
         # print(posts)
-        if posts["dist"] == 0:
+        if not posts or posts["dist"] == 0:
             return await error_message(message,
                                        title="Something went wrong",
                                        desc=f"SubReddit '{subreddit}' was not found")
@@ -124,6 +124,8 @@ async def get(js, args=None):
 
     try:
         nb_posts = js["data"]["dist"]
+        if nb_posts == 0:
+            return js["data"], None
         posts = js["data"]["children"]
 
         post_nb = random.randrange(nb_posts)
@@ -131,9 +133,9 @@ async def get(js, args=None):
         post = posts[post_nb]
         post_data = post["data"]
     except:
-        return js["data"], None
-    # print(post)
+        return None, None
 
+    # print(post)
     if show_novideos and post_data["is_video"]:
         return posts, None
     if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
