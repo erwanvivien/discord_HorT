@@ -2,7 +2,8 @@
 import discord
 from discord.ext import commands
 from utils import get_content
-from discord_utils import author_name, error_message, hort
+from discord_utils import author_name, error_message
+from discord_utils import hort, horts
 
 # from discord_utils import hort
 
@@ -23,10 +24,12 @@ prefix = "$hort"
 token = get_content("token")
 
 CMDS = {
-    {"$hart": hort},
-    {"$hort": hort},
-    {"$harts": horts},
-    {"$horts": horts},
+    "$hart": hort,
+    "$hort": hort,
+    "$harts": horts,
+    "$horts": horts,
+
+    # "$spec": spec,
 }
 
 
@@ -52,14 +55,19 @@ class Client(discord.Client):
         args = split[1].split(' ') if len(split) > 1 else None
 
         # Check if a bot command
-        if not cmd.startswith(f"$hort") and not cmd.startswith(f"$hart"):
-            return
+        # if not cmd.startswith(f"$hort") and not cmd.startswith(f"$hart"):
+        #     return
 
         # Debugging stuff
         name = author_name(message.author)
-        print(f"{name} issued {cmd} command. <{args}>")
 
-        await hort(self, message, args)
+        try:
+            await CMDS[cmd](self, message, args)
+            print(f"{name} issued {cmd} command. <{args}>")
+        except:
+            return
+
+        # await hort(self, message, args)
 
         # cur_cmd = None
         # try:
