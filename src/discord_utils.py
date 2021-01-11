@@ -62,7 +62,16 @@ async def horts(self, message, args):
         nb -= 1
 
 
-async def hort(self, message, args):
+async def hort_lim(self, message, args):
+    try:
+        nb = int(args[0])
+    except:
+        return error_message(message, title="Wrong usage", desc="1st argument must be an integer")
+
+    await hort(self, message, args, nb)
+
+
+async def hort(self, message, args, limit=30):
     show_subreddit = (args != None) and ("show" in args)
 
     is_bad = (args != None) and ("bad" in args)

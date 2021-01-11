@@ -3,7 +3,7 @@ import discord
 from discord.ext import commands
 from utils import get_content
 from discord_utils import author_name, error_message
-from discord_utils import hort, horts
+from discord_utils import hort, horts, hort_lim
 
 # from discord_utils import hort
 
@@ -26,10 +26,12 @@ token = get_content("token")
 CMDS = {
     "$hart": hort,
     "$hort": hort,
+
     "$harts": horts,
     "$horts": horts,
 
-    # "$spec": spec,
+    "$hortlim": hort_lim,
+    "$hartlim": hort_lim,
 }
 
 
