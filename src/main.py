@@ -4,12 +4,17 @@ from discord.ext import commands
 from utils import get_content
 from discord_utils import author_name, error_message, hort
 
+# from discord_utils import hort
+
 # All the bot ids (dev and current)
 BOT_IDS = []
 # The dev id (Xiaojiba#1407)
 DEV_IDS = [289145021922279425]
 # Error log
 ERRORS = []
+# Invite link
+DISC_LNK = 'https://discord.com/api/oauth2/authorize?client_id=798130116491345971&permissions=2048&scope=bot'
+
 
 # The prefix used to trigger the bot
 prefix = "$hort"
@@ -21,7 +26,9 @@ token = get_content("token")
 class Client(discord.Client):
     async def on_ready(self):
         print(f'[HorT] Logged on as {self.user}')
-        print('---------------------------------------')
+        print(f"invite link: ↓\n{DISC_LNK}")
+        print('================================================================================================')
+        print()
 
         await client.change_presence(
             status=discord.Status.online,
@@ -44,6 +51,8 @@ class Client(discord.Client):
         # Debugging stuff
         name = author_name(message.author)
         print(f"{name} issued {cmd} command. <{args}>")
+
+        await hort(self, message, args)
 
         # cur_cmd = None
         # try:
