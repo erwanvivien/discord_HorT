@@ -11,13 +11,21 @@ ERROR_COLOR = discord.Colour(0xff0000)
 WARN_COLOR = discord.Colour(0xebdb34)
 VALID_COLOR = discord.Colour(0x55da50)
 
-BAD_REDDIT = ["trashy", "poop", "UnderTail", "cursedimages", "FearMe",
-              "creepy", "WTF", "MakeMeSuffer", "buttsharpies",
-              "dragonfuckingcars", "SubwayCreatures", "afterfirstglance",
-              "rule34"]
+BAD_REDDIT = [
+    "trashy", "poop", "UnderTail", "cursedimages", "FearMe",
+    "creepy", "WTF", "MakeMeSuffer", "buttsharpies",
+    "dragonfuckingcars", "SubwayCreatures",
+    "rule34", "disturbingpics", "DiWHY", "femalepov",
+    "hentai", "cursedcursedimages"
+]
 
-GOD_REDDIT = ["lovepics", "aww", "nocontextpics", "AnimalsBeingBros",
-              "NatureIsFuckingLit", "wholesomememes", "photoshopbattles"]
+GOD_REDDIT = [
+    "lovepics", "aww", "AnimalsBeingBros", "BiggerThanYouThought",
+    "wholesomememes", "wtfstockphotos", "FoodPorn",
+    "FiftyFifty", "Celebswithbigtits", "PerfectTiming",
+    "2busty2hide", "natureporn", "HungryButts",
+    "Minecraft", "goddesses", "BeautifulFemales"
+]
 
 REDDIT = [BAD_REDDIT, GOD_REDDIT]
 
@@ -43,31 +51,37 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
     await message.channel.send(embed=embed)
 
 
-async def hort(self, message, args):
+async def horts(self, message, args):
     try:
         nb = int(args[0])
     except:
-        nb = 1
+        return error_message(message, title="Wrong usage", desc="1st argument must be an integer")
 
+    while nb > 0:
+        hort(self, message, args)
+        nb -= 1
+
+
+async def hort(self, message, args):
     show_subreddit = (args != None) and ("show" in args)
-    show_videos = (args != None) and ("video" in args)
+    show_novideos = (args != None) and ("novideo" in args)
 
     is_bad = (args != None) and ("bad" in args)
     is_good = (args != None) and ("good" in args)
 
-    while nb > 0:
-        post_data = None
-        good_or_bad = random.choice(REDDIT)
+    post_data = None
+    good_or_bad = random.choice(REDDIT)
 
-        if is_bad:
-            good_or_bad = BAD_REDDIT
-        elif is_good:
-            good_or_bad = GOD_REDDIT
+    if is_bad:
+        good_or_bad = BAD_REDDIT
+    elif is_good:
+        good_or_bad = GOD_REDDIT
 
-        while True:
-            subreddit = random.choice(good_or_bad)
-            js = subreddit_json(subreddit)
+    while True:
+        subreddit = random.choice(good_or_bad)
+        js = subreddit_json(subreddit)
 
+        try:
             nb_posts = js["data"]["dist"]
             posts = js["data"]["children"]
 
@@ -75,17 +89,17 @@ async def hort(self, message, args):
 
             post = posts[post_nb]
             post_data = post["data"]
-            # print(post)
+        except:
+            continue
+        # print(post)
 
-            if not show_videos and post_data["is_video"]:
-                continue
-            if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
-                continue
+        if show_novideos and post_data["is_video"]:
+            continue
+        if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
+            continue
 
-            break
+        break
 
-        if show_subreddit:
-            await message.channel.send(post_data["subreddit"])
-        await message.channel.send(post_data["url"])
-
-        nb -= 1
+    if show_subreddit:
+        await message.channel.send(post_data["subreddit"])
+    await message.channel.send(post_data["url"])
