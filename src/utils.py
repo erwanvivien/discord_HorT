@@ -62,3 +62,19 @@ async def remove(self, message, args):
 
     await discord_utils.send_message(
         message, title="Success", desc=f"This SubReddit was succesfully removed to the {args[0]} list")
+
+
+async def list(self, message, args):
+    if not args or not args[0] in ["bad", "good"]:
+        return await discord_utils.error_message(message, title="Wrong usage", desc="add needs arguments\n``good/bad`` ``sub_name``")
+
+    l = get_content(args[0]).split('\n')
+    s = ""
+    for e in l:
+        s += "- /r/" + e + "\n"
+
+    await discord_utils.send_message(
+        message,
+        title=f"({len(l)}) {args[0]}'s list",
+        desc=s,
+        url=f"https://github.com/erwanvivien/discord-HorT/blob/main/{args[0]}")
