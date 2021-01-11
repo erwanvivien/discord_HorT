@@ -22,6 +22,13 @@ prefix = "$hort"
 # Discord bot token
 token = get_content("token")
 
+CMDS = {
+    {"$hart": hort},
+    {"$hort": hort},
+    {"$harts": horts},
+    {"$horts": horts},
+}
+
 
 class Client(discord.Client):
     async def on_ready(self):
@@ -45,7 +52,7 @@ class Client(discord.Client):
         args = split[1].split(' ') if len(split) > 1 else None
 
         # Check if a bot command
-        if not cmd.startswith(f"$hort"):
+        if not cmd.startswith(f"$hort") and not cmd.startswith(f"$hart"):
             return
 
         # Debugging stuff
