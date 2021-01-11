@@ -59,55 +59,12 @@ class Client(discord.Client):
         cmd = split[0].lower()
         args = split[1].split(' ') if len(split) > 1 else None
 
-        # Check if a bot command
-        # if not cmd.startswith(f"$hort") and not cmd.startswith(f"$hart"):
-        #     return
-
-        # Debugging stuff
         name = author_name(message.author)
 
         if cmd in CMDS:
             print(f"{name} issued {cmd} command. <{args}>")
             await CMDS[cmd](self, message, args)
 
-        # await hort(self, message, args)
 
-        # cur_cmd = None
-        # try:
-        #     length_prefix = len(prefix)
-        #     suffix = cmd[length_prefix:]  # Get command suffix
-        #     cur_cmd = COMMANDS[suffix]['cmd']
-        #     await cur_cmd(self, message, args)
-        # except Exception as error:
-        #     if not cur_cmd:
-        #         return await error_message(message, title=f"Unknown command '{suffix}'")
-
-        #     ERRORS += [time.ctime() + ': ' + str(error)]
-        #     cmd = cmds.format_cmd(prefix, "report")
-        #     await error_message(message,
-        #                         title=f"The command {suffix} failed...",
-        #                         desc=f"Please use ``{cmd}`` if you think it's an unexpected behaviour")
-
-    # async def on_reaction_add(self, reaction, user):
-    #     if user.id in BOT_IDS:
-    #         return
-
-    #     # Debugging stuff
-    #     print(f"{user} added a {reaction.emoji}")
-
-    #     # Both dev ids
-    #     if reaction.emoji in ['✅'] and user.id in cmds.DEV_IDS \
-    #             and reaction.message.channel.id == cmds.REPORT_CHANN_ID:
-    #         await reaction.message.delete()
-
-    #     if reaction.emoji in ['❌']:
-    #         await reaction.message.delete()
-
-
-# db.create()
 client = Client()
 client.run(token)
-
-# is_video = false
-# "after" exists => usage: &after=t3_XXXXXXX
-# .json?limit=100
