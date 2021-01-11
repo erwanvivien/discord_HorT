@@ -42,23 +42,34 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
 
 
 async def hort(self, message, args):
-    post = None
-    good_or_bad = random.choice(REDDIT)
+    try:
+        nb = int(args[0])
+    except:
+        nb = 1
 
-    while True:
-        subreddit = random.choice(good_or_bad)
-        js = subreddit_json(subreddit)
+    while nb > 0:
+        post_data = None
+        good_or_bad = random.choice(REDDIT)
 
-        nb_posts = js["data"]["dist"]
-        posts = js["data"]["children"]
+        while True:
+            subreddit = random.choice(good_or_bad)
+            js = subreddit_json(subreddit)
 
-        post_nb = random.randrange(nb_posts)
+            nb_posts = js["data"]["dist"]
+            posts = js["data"]["children"]
 
-        post = posts[post_nb]
+            post_nb = random.randrange(nb_posts)
 
-        if post["is_video"]:
-            continue
+            post = posts[post_nb]
+            post_data = post["data"]
+            # print(post)
 
-        break
+            if post_data["is_video"]:
+                continue
 
-    await message.channel.send(post["url"])
+            break
+
+        await message.channel.send(post_data["subreddit"])
+        await message.channel.send(post_data["url"])
+
+        nb -= 1
