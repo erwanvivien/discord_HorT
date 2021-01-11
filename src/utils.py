@@ -1,4 +1,5 @@
 import requests
+import json
 
 
 def get_content(file):
@@ -10,5 +11,7 @@ def get_content(file):
 
 
 def subreddit_json(subreddit):
-    r = requests.get(f"http://reddit.com/r/{subreddit}.json&limit=100")
+    headers = {"User-Agent": "discord:798130116491345971:v1 (by /u/Xiaojiba)"}
+    r = requests.get(
+        f"http://reddit.com/r/{subreddit}/.json", headers=headers)
     return r.json()
