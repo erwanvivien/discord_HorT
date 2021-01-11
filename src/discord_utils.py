@@ -13,7 +13,8 @@ VALID_COLOR = discord.Colour(0x55da50)
 
 BAD_REDDIT = ["trashy", "poop", "UnderTail", "cursedimages", "FearMe",
               "creepy", "WTF", "MakeMeSuffer", "buttsharpies",
-              "dragonfuckingcars", "SubwayCreatures"]
+              "dragonfuckingcars", "SubwayCreatures", "afterfirstglance",
+              "rule34"]
 
 GOD_REDDIT = ["lovepics", "aww", "nocontextpics", "AnimalsBeingBros",
               "NatureIsFuckingLit", "wholesomememes", "photoshopbattles"]
@@ -51,9 +52,17 @@ async def hort(self, message, args):
     show_subreddit = (args != None) and ("show" in args)
     show_videos = (args != None) and ("video" in args)
 
+    is_bad = (args != None) and ("bad" in args)
+    is_good = (args != None) and ("good" in args)
+
     while nb > 0:
         post_data = None
         good_or_bad = random.choice(REDDIT)
+
+        if is_bad:
+            good_or_bad = BAD_REDDIT
+        elif is_good:
+            good_or_bad = GOD_REDDIT
 
         while True:
             subreddit = random.choice(good_or_bad)
@@ -66,9 +75,11 @@ async def hort(self, message, args):
 
             post = posts[post_nb]
             post_data = post["data"]
-            print(post)
+            # print(post)
 
             if not show_videos and post_data["is_video"]:
+                continue
+            if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
                 continue
 
             break
