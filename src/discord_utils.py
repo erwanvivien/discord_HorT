@@ -64,7 +64,6 @@ async def horts(self, message, args):
 
 async def hort(self, message, args):
     show_subreddit = (args != None) and ("show" in args)
-    show_novideos = (args != None) and ("novideo" in args)
 
     is_bad = (args != None) and ("bad" in args)
     is_good = (args != None) and ("good" in args)
@@ -81,21 +80,8 @@ async def hort(self, message, args):
         subreddit = random.choice(good_or_bad)
         js = subreddit_json(subreddit)
 
-        try:
-            nb_posts = js["data"]["dist"]
-            posts = js["data"]["children"]
-
-            post_nb = random.randrange(nb_posts)
-
-            post = posts[post_nb]
-            post_data = post["data"]
-        except:
-            continue
-        # print(post)
-
-        if show_novideos and post_data["is_video"]:
-            continue
-        if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
+        post_data = await get(js, args)
+        if not post_data:
             continue
 
         break
@@ -103,3 +89,26 @@ async def hort(self, message, args):
     if show_subreddit:
         await message.channel.send(post_data["subreddit"])
     await message.channel.send(post_data["url"])
+
+
+async def get(js, args=None):
+    show_novideos = (args != None) and ("novideo" in args)
+
+    try:
+        nb_posts = js["data"]["dist"]
+        posts = js["data"]["children"]
+
+        post_nb = random.randrange(nb_posts)
+
+        post = posts[post_nb]
+        post_data = post["data"]
+    except:
+        return None
+    # print(post)
+
+    if show_novideos and post_data["is_video"]:
+        return None
+    if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
+        return None
+
+    return post_data
