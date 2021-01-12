@@ -51,7 +51,7 @@ async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_UR
     await message.channel.send(embed=embed)
 
 
-async def horts(self, message, args):
+async def horts(self, message, args, subreddit_def=None):
     try:
         nb = int(args[0])
         if nb > 10:
@@ -62,28 +62,25 @@ async def horts(self, message, args):
         return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
 
     while nb > 0:
-        await hort(self, message, args)
+        await hort(self, message, args, subreddit_def)
         nb -= 1
 
 
-async def hort_lim(self, message, args):
-    try:
-        await hort(self, message, args, int(args[0]))
-    except:
-        return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
+# async def hort_lim(self, message, args):
+#     try:
+#         await hort(self, message, args, int(args[0]))
+#     except:
+#         return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
 
 
 async def hort_spec(self, message, args):
-    try:
-        return await hort(self, message, args, int(args[1]), args[0])
-    except:
-        try:
-            return await hort(self, message, args, int(args[0]), args[1])
-        except:
-            return await hort(self, message, args, 30, args[0])
+    if len(args) > 1 and args[1].isnumeric():
+        await horts(self, message, args[1:], args[0])
+    else:
+        await hort(self, message, args[1:], args[0])
 
 
-async def hort(self, message, args, limit=30, subreddit=None):
+async def hort(self, message, args, subreddit_def=None):
     show_subreddit = (args != None) and ("show" in args)
 
     is_bad = (args != None) and ("bad" in args)
@@ -99,10 +96,24 @@ async def hort(self, message, args, limit=30, subreddit=None):
 
     while True:
         subreddit = random.choice(
-            good_or_bad) if subreddit == None else subreddit
+            good_or_bad) if subreddit_def == None else subreddit_def
         js = utils.subreddit_json(subreddit)
+        if "error" in js:
+            error = js["reason"]
+            await error_message(message,
+                                title="SubReddit error",
+                                desc=f"""Subreddit ``{subreddit}`` is currently not available, check if quanrantined, banned or private.
+                                ⚠ Consider removing it from your list ! ⚠\n
+                                Actual error was : ``{error}``
+                                """)
+            if subreddit_def != None:
+                return
+            else:
+                continue
 
-        posts, post_data = await get(js, args)
+        posts, post_data = await get(message, js, args)
+        # print(posts)
+
         if not posts:
             continue
 
@@ -122,7 +133,7 @@ async def hort(self, message, args, limit=30, subreddit=None):
     await message.channel.send(post_data["url"])
 
 
-async def get(js, args=None):
+async def get(message, js, args=None):
     show_novideos = (args != None) and ("novideo" in args)
 
     if not "data" in js:
@@ -138,9 +149,9 @@ async def get(js, args=None):
 
         post = posts[post_nb]
         post_data = post["data"]
-    except:
+    except Exception as error:
         print(js)
-        return js["data"], None
+        return js, error
 
     # print(post)
     if show_novideos and post_data["is_video"]:
@@ -154,9 +165,8 @@ async def get(js, args=None):
 async def help(self, message, args):
     s = """
 ```
-- $hart 
+- $hart
 - $harts nb                         # with (1 <= nb <= 10)
-- $hartlim nb                       # with (1 <= nb <= 100)
 - $hartspec sub_name [nb]           # with (1 <= nb <= 10)
 - $hartadd good/bad sub_name
 
