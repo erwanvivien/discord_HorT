@@ -16,7 +16,8 @@ def get_content(file):
 
 def subreddit_json(subreddit):
     now = datetime.datetime.now()
-    path = "save/" + subreddit + "_" + now.strftime("%Y-%m-%d_%H") + "h.json"
+    path = "subreddit_saves/" + subreddit + "_" + \
+        now.strftime("%Y-%m-%d_%H") + "h.json"
     if os.path.exists(path):
         return json.loads(get_content(path))
 
