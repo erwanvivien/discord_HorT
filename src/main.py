@@ -41,8 +41,8 @@ CMDS = {
     "$harts": discord_utils.horts,
     "$horts": discord_utils.horts,
 
-    "$hortlim": discord_utils.hort_lim,
-    "$hartlim": discord_utils.hort_lim,
+    # "$hortlim": discord_utils.hort_lim,
+    # "$hartlim": discord_utils.hort_lim,
 
     "$hartspec": discord_utils.hort_spec,
     "$hortspec": discord_utils.hort_spec,
