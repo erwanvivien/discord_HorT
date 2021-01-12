@@ -42,10 +42,7 @@ async def add(self, message, args):
         return await discord_utils.error_message(message, title="Wrong usage", desc="add needs arguments\n``good/bad`` ``sub_name``")
 
     js = subreddit_json(args[1])
-    try:
-        if js["data"]["dist"] == 0:
-            raise Exception()
-    except:
+    if not "data" in js or not "dist" in js["data"] or js["data"]["dist"] == 0:
         return await discord_utils.error_message(message, title="Wrong SubReddit", desc="This SubReddit doesn't exist")
 
     l = get_content(args[0]).split('\n')
