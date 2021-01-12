@@ -4,7 +4,6 @@ A Heads or Tails discord bot
 ## Usages
 - [``$hart``](https://github.com/erwanvivien/discord-HorT#default-command)
 - [``$harts``](https://github.com/erwanvivien/discord-HorT#Multiple-draws)
-- [``$hartlim``](https://github.com/erwanvivien/discord-HorT#More-results-if-not-satisfied)
 - [``$hartspec``](https://github.com/erwanvivien/discord-HorT#Specific-results-from-any-SubReddit)
 - [``$hartadd`` or ``$hartremove`` or ``$hartlist``](https://github.com/erwanvivien/discord-HorT#Add-or-remove-from-list-of-SubReddits)
 
