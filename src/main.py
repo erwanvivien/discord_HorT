@@ -12,6 +12,7 @@ from discord.ext import commands
 
 import discord_utils
 import utils
+import database as db
 
 # from discord_utils import hort
 
@@ -76,6 +77,10 @@ class Client(discord.Client):
         if message.author.id in BOT_IDS:
             return
 
+        if not db.exists(message.guild.id):
+            print(f"added: {message.guild.id}")
+            db.add_guild(message.guild.id)
+
         split = message.content.split(' ', 1)  # separate mom?[cmd] from args
         cmd = split[0].lower()
         args = split[1].split(' ') if len(split) > 1 else None
@@ -87,5 +92,6 @@ class Client(discord.Client):
             await CMDS[cmd](self, message, args)
 
 
+db.create()
 client = Client()
 client.run(token)

@@ -4,6 +4,7 @@ import json
 import discord_utils
 import os
 import datetime
+import database as db
 
 
 def get_content(file):
@@ -81,10 +82,12 @@ async def list(self, message, args):
     if not args or not args[0] in ["bad", "good"]:
         return await discord_utils.error_message(message, title="Wrong usage", desc="add needs arguments\n``good/bad`` ``sub_name``")
 
-    l = get_content(args[0]).split('\n')
+    l = db.exec(
+        f"SELECT subreddit FROM {args[0]} WHERE id_discord = {message.guild.id}")
+    print(l)
     s = ""
     for e in l:
-        s += "- /r/" + e + "\n"
+        s += "- /r/" + e[0] + "\n"
 
     await discord_utils.send_message(
         message,

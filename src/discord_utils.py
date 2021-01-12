@@ -2,6 +2,7 @@ import discord
 import random
 # from utils import subreddit_json, get_content
 import utils
+import database as db
 
 WRONG_USAGE = "Something went wrong"
 HELP_USAGE = "Please see $horthelp"
@@ -12,12 +13,7 @@ ERROR_COLOR = discord.Colour(0xff0000)
 WARN_COLOR = discord.Colour(0xebdb34)
 VALID_COLOR = discord.Colour(0x55da50)
 
-
-GOD_REDDIT = utils.get_content("good").split('\n')
-BAD_REDDIT = utils.get_content("bad").split('\n')
-
-
-REDDIT = [BAD_REDDIT, GOD_REDDIT]
+REDDIT = ["good", "bad"]
 
 
 def author_name(author):
@@ -87,16 +83,20 @@ async def hort(self, message, args, subreddit_def=None):
     is_good = (args != None) and ("good" in args)
 
     post_data = None
-    good_or_bad = random.choice(REDDIT)
 
+    good_or_bad = random.choice(REDDIT)
     if is_bad:
-        good_or_bad = BAD_REDDIT
+        good_or_bad = "bad"
     elif is_good:
-        good_or_bad = GOD_REDDIT
+        good_or_bad = "good"
+
+    subreddits = db.exec(
+        f'SELECT subreddit FROM {good_or_bad} WHERE id_discord = {message.guild.id}')
+    subreddits = [e[0] for e in subreddits]
 
     while True:
         subreddit = random.choice(
-            good_or_bad) if subreddit_def == None else subreddit_def
+            subreddits) if subreddit_def == None else subreddit_def
         js = utils.subreddit_json(subreddit)
         if "error" in js:
             error = js["reason"]
