@@ -47,3 +47,15 @@ HOW TO:
 ```bash
 $hartadd good/bad sub_name
 ```
+
+## SubReddit Error
+It is possible if a sub is private, quarantined or banned.
+```json
+{
+    "reason": "quarantined", 
+    "quarantine_message_html": "It is dedicated to shocking or highly offensive content", 
+    "message": "Forbidden", 
+    "quarantine_message": "It is dedicated to shocking or highly offensive content.", 
+    "error": 403
+}
+```
