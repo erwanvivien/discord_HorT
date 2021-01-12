@@ -48,12 +48,12 @@ CMDS = {
     "$hartspec": discord_utils.hort_spec,
     "$hortspec": discord_utils.hort_spec,
 
-    "$hartadd": utils.add,
-    "$hortadd": utils.add,
-    "$hartremove": utils.remove,
-    "$hortremove": utils.remove,
-    "$hartlist": utils.list,
-    "$hortlist": utils.list,
+    "$hartadd": db.add,
+    "$hortadd": db.add,
+    "$hartremove": db.remove,
+    "$hortremove": db.remove,
+    "$hartlist": db.list,
+    "$hortlist": db.list,
 
     "$horthelp": discord_utils.help,
     "$harthelp": discord_utils.help,
@@ -78,7 +78,7 @@ class Client(discord.Client):
         if message.author.id in BOT_IDS:
             return
 
-        if not db.exists(message.guild.id):
+        if db.exists(message.guild.id) == None:
             print(f"added: {message.guild.id}")
             db.add_guild(message.guild.id)
 

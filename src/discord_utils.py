@@ -62,13 +62,6 @@ async def horts(self, message, args, subreddit_def=None):
         nb -= 1
 
 
-# async def hort_lim(self, message, args):
-#     try:
-#         await hort(self, message, args, int(args[0]))
-#     except:
-#         return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
-
-
 async def hort_spec(self, message, args):
     if len(args) > 1 and args[1].isnumeric():
         await horts(self, message, args[1:], args[0])
@@ -90,8 +83,8 @@ async def hort(self, message, args, subreddit_def=None):
     elif is_good:
         good_or_bad = "good"
 
-    subreddits = db.exec(
-        f'SELECT subreddit FROM {good_or_bad} WHERE id_discord = {message.guild.id}')
+    sql = f'SELECT subreddit FROM {good_or_bad} WHERE id_discord = {message.guild.id}'
+    subreddits = db.exec(sql)
     subreddits = [e[0] for e in subreddits]
 
     while True:
