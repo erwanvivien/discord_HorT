@@ -74,6 +74,7 @@ class Client(discord.Client):
                 type=discord.ActivityType.watching))
 
     async def on_message(self, message):
+        utils.remove_old_saves()
         if message.author.id in BOT_IDS:
             return
 

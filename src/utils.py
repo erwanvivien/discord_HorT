@@ -5,6 +5,7 @@ import discord_utils
 import os
 import datetime
 import database as db
+import shutil
 
 
 def get_content(file):
@@ -15,11 +16,28 @@ def get_content(file):
     return s
 
 
+def remove_old_saves():
+    now = datetime.datetime.now()
+    halfhour = int(int(now.strftime("%H")) / 2)
+
+    foldername = now.strftime("%Y-%m-%d_") + str(halfhour) + "h"
+    if not os.path.exists(f"subreddit_saves"):
+        os.mkdir("subreddit_saves")
+    if not os.path.exists(f"subreddit_saves/{foldername}"):
+        shutil.rmtree("subreddit_saves")
+        os.mkdir("subreddit_saves")
+
+
 def subreddit_json(subreddit):
     now = datetime.datetime.now()
     halfhour = int(int(now.strftime("%H")) / 2)
-    path = "subreddit_saves/" + subreddit + "_" + \
-        now.strftime("%Y-%m-%d_") + str(halfhour) + "h.json"
+
+    foldername = now.strftime("%Y-%m-%d_") + str(halfhour) + "h"
+    if not os.path.exists(f"subreddit_saves/{foldername}"):
+        remove_old_saves()
+        os.mkdir(f"subreddit_saves/{foldername}")
+
+    path = f"subreddit_saves/{foldername}/{subreddit}.json"
 
     if os.path.exists(path):
         return json.loads(get_content(path))
