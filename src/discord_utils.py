@@ -103,10 +103,12 @@ async def hort(self, message, args, limit=30, subreddit=None):
         js = utils.subreddit_json(subreddit)
 
         posts, post_data = await get(js, args)
+        if not posts:
+            continue
 
         # print(posts)
-        if not posts or ("dist" in posts and posts["dist"] == 0 or
-                         "error" in posts and posts["error"] != 200):
+        if ("dist" in posts and posts["dist"] == 0 or
+                "error" in posts and posts["error"] != 200):
             return await error_message(message,
                                        title="Something went wrong",
                                        desc=f"SubReddit '{subreddit}' was not found")
@@ -122,6 +124,9 @@ async def hort(self, message, args, limit=30, subreddit=None):
 
 async def get(js, args=None):
     show_novideos = (args != None) and ("novideo" in args)
+
+    if not "data" in js:
+        return None, None
 
     try:
         nb_posts = js["data"]["dist"]
@@ -144,3 +149,23 @@ async def get(js, args=None):
         return posts, None
 
     return js["data"], post_data
+
+
+async def help(self, message, args):
+    s = """
+```
+- $hart 
+- $harts nb                         # with (1 <= nb <= 10)
+- $hartlim nb                       # with (1 <= nb <= 100)
+- $hartspec sub_name [nb]           # with (1 <= nb <= 10)
+- $hartadd good/bad sub_name
+
+Optional params for all functions:
+- show
+- novideo
+- bad / good
+```
+    """
+
+    await send_message(message, title="Usage", desc=s,
+                       url="https://github.com/erwanvivien/discord-HorT#usages")
