@@ -13,7 +13,7 @@ def get_content(file):
     return s
 
 
-DB_PATH = "database.db"
+DB_PATH = "db_discordhort/database.db"
 
 
 def create():

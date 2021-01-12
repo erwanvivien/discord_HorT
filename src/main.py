@@ -34,6 +34,9 @@ token = utils.get_content("token")
 
 if not os.path.isdir("subreddit_saves"):
     os.mkdir("subreddit_saves")
+if not os.path.isdir("db_discordhort"):
+    os.mkdir("db_discordhort")
+
 
 CMDS = {
     "$hart": discord_utils.hort,
