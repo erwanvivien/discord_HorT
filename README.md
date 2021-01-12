@@ -24,14 +24,6 @@ HOW TO:
 $harts nb [show] [novideo] [bad/good]     # with (1 <= nb <= 10)
 ```
 
-### More results if not satisfied
-``$hartlim`` or ``$hortlim`` for more results (equivalent to ``$hart``, takes longer)
-
-HOW TO:
-```bash
-$hartlim nb [show] [novideo] [bad/good]     # with (1 <= nb <= 100)
-```
-
 ### Specific results from any SubReddit
 ``$hartspec`` or ``$hortspec`` for results in a specific SubReddit (equivalent to ``$hartlim``)
 
