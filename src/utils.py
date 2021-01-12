@@ -16,7 +16,7 @@ def get_content(file):
 
 def subreddit_json(subreddit):
     now = datetime.datetime.now()
-    halfhour = int(now.strftime("%H")) / 2
+    halfhour = int(int(now.strftime("%H")) / 2)
     path = "subreddit_saves/" + subreddit + "_" + \
         now.strftime("%Y-%m-%d_") + str(halfhour) + "h.json"
 
