@@ -16,11 +16,14 @@ def get_content(file):
 
 def subreddit_json(subreddit):
     now = datetime.datetime.now()
+    halfhour = int(now.strftime("%H")) / 2
     path = "subreddit_saves/" + subreddit + "_" + \
-        now.strftime("%Y-%m-%d_%H") + "h.json"
+        now.strftime("%Y-%m-%d_") + str(halfhour) + "h.json"
+
     if os.path.exists(path):
         return json.loads(get_content(path))
 
+    print("Created new file: " + path)
     headers = {"User-Agent": "discord:798130116491345971:v1 (by /u/Xiaojiba)"}
     r = requests.get(
         f"http://reddit.com/r/{subreddit}/.json?limit=100",
