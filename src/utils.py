@@ -2,6 +2,8 @@ import requests
 import json
 # from discord_utils import error_message
 import discord_utils
+import os
+import datetime
 
 
 def get_content(file):
@@ -12,12 +14,22 @@ def get_content(file):
     return s
 
 
-def subreddit_json(subreddit, limit=30):
+def subreddit_json(subreddit):
+    now = datetime.datetime.now()
+    path = "save/" + subreddit + "_" + now.strftime("%Y-%m-%d_%H") + "h.json"
+    if os.path.exists(path):
+        return json.loads(get_content(path))
+
     headers = {"User-Agent": "discord:798130116491345971:v1 (by /u/Xiaojiba)"}
     r = requests.get(
-        f"http://reddit.com/r/{subreddit}/.json?limit={limit}",
+        f"http://reddit.com/r/{subreddit}/.json?limit=100",
         headers=headers,
         timeout=5)
+
+    f = open(path, "w")
+    f.write(r.text)
+    f.close()
+
     return r.json()
 
 
@@ -25,7 +37,7 @@ async def add(self, message, args):
     if not args or not args[0] in ["bad", "good"]:
         return await discord_utils.error_message(message, title="Wrong usage", desc="add needs arguments\n``good/bad`` ``sub_name``")
 
-    js = subreddit_json(args[1], 5)
+    js = subreddit_json(args[1])
     try:
         if js["data"]["dist"] == 0:
             raise Exception()
