@@ -1,5 +1,6 @@
 # need to do :
 import discord
+import os
 from discord.ext import commands
 
 # from utils import get_content
@@ -30,6 +31,9 @@ prefix = "$hort"
 # Discord bot token
 token = utils.get_content("token")
 
+if not os.path.isdir("subreddit_saves"):
+    os.mkdir("subreddit_saves")
+
 CMDS = {
     "$hart": discord_utils.hort,
     "$hort": discord_utils.hort,
@@ -41,7 +45,7 @@ CMDS = {
     "$hartlim": discord_utils.hort_lim,
 
     "$hartspec": discord_utils.hort_spec,
-    "$hartspec": discord_utils.hort_spec,
+    "$hortspec": discord_utils.hort_spec,
 
     "$hartadd": utils.add,
     "$hortadd": utils.add,
@@ -49,6 +53,9 @@ CMDS = {
     "$hortremove": utils.remove,
     "$hartlist": utils.list,
     "$hortlist": utils.list,
+
+    "$horthelp": discord_utils.help,
+    "$harthelp": discord_utils.help,
 }
 
 
