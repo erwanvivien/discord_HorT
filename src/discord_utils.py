@@ -122,12 +122,11 @@ async def hort(self, message, args, subreddit_def=None):
         break
 
     if show_subreddit:
-        s = post_data["subreddit"]
+        sub = post_data["subreddit"]
     else:
-        s = 'Was from || r/' + post_data["subreddit"] + '/ ||'
+        sub = "||" + post_data["subreddit"] + "||"
 
-    await message.channel.send(post_data["url"])
-    await message.channel.send(s)
+    await message.channel.send(f"/r/{sub}\n" + post_data["url"])
 
 
 async def get(message, js, args=None):
