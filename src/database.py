@@ -80,14 +80,14 @@ def add_guild(discord_id):
 
 
 async def add(self, message, args):
-    if not args or not args[0] in ["good", "bad"]:
+    if not args or not args[0] in ["good", "bad"] or len(args) < 2:
         return await discord_utils.error_message(message, title="Wrong usage", desc="Add needs arguments\n``good/bad`` ``sub_name``")
 
     good_or_bad = args[0]
     discord_id = message.guild.id
     sub = args[1]
 
-    sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit = ?'''
+    sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
     if exec(sql, (discord_id, sub)):
         return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit already exists")
 
@@ -99,14 +99,14 @@ async def add(self, message, args):
 
 
 async def remove(self, message, args):
-    if not args or not args[0] in ["good", "bad"]:
+    if not args or not args[0] in ["good", "bad"] or len(args) < 2:
         return await discord_utils.error_message(message, title="Wrong usage", desc="Add needs arguments\n``good/bad`` ``sub_name``")
 
     good_or_bad = args[0]
     discord_id = message.guild.id
     sub = args[1]
 
-    sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit = ?'''
+    sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
     if not exec(sql, (discord_id, sub)):
         return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit doesn't exist")
 
