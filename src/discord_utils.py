@@ -50,8 +50,8 @@ async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_UR
 async def horts(self, message, args, subreddit_def=None):
     try:
         nb = int(args[0])
-        if nb > 10:
-            nb = 10
+        if nb > 5:
+            nb = 5
         elif nb < 0:
             nb = 0
     except:
@@ -163,8 +163,8 @@ async def help(self, message, args):
     s = """
 ```
 - $hart
-- $harts nb                         # with (1 <= nb <= 10)
-- $hartspec sub_name [nb]           # with (1 <= nb <= 10)
+- $harts nb                         # with (1 <= nb <= 5)
+- $hartspec sub_name [nb]           # with (1 <= nb <= 5)
 - $hartadd good/bad sub_name
 
 Optional params for all functions:
