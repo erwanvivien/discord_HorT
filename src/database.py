@@ -85,17 +85,17 @@ async def add(self, message, args):
 
     good_or_bad = args[0]
     discord_id = message.guild.id
-    sub = args[1]
+    for sub in args[1:]:
+        sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
+        if exec(sql, (discord_id, sub)):
+            return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit already exists")
 
-    sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
-    if exec(sql, (discord_id, sub)):
-        return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit already exists")
+        sql = f'''INSERT INTO {good_or_bad} (id, id_discord, subreddit) VALUES (?, ?, ?)'''
+        args = (None, discord_id, sub)
+        exec(sql, args)
 
-    sql = f'''INSERT INTO {good_or_bad} (id, id_discord, subreddit) VALUES (?, ?, ?)'''
-    args = (None, discord_id, sub)
-    exec(sql, args)
-
-    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit ``{sub}`` successfully added")
+    subs = " ".join(["``{sub}``" for sub in args[1:]])
+    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ${subs} successfully added")
 
 
 async def remove(self, message, args):
@@ -104,17 +104,18 @@ async def remove(self, message, args):
 
     good_or_bad = args[0]
     discord_id = message.guild.id
-    sub = args[1]
 
-    sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
-    if not exec(sql, (discord_id, sub)):
-        return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit doesn't exist")
+    for sub in args[1:]:
+        sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
+        if not exec(sql, (discord_id, sub)):
+            return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit doesn't exist")
 
-    sql = f'''DELETE FROM {good_or_bad}
-              WHERE id_discord = ? AND subreddit = ?'''
-    exec(sql, (discord_id, sub))
+        sql = f'''DELETE FROM {good_or_bad}
+                WHERE id_discord = ? AND subreddit = ?'''
+        exec(sql, (discord_id, sub))
 
-    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit ``{sub}`` successfully removed")
+    subs = " ".join(["``{sub}``" for sub in args[1:]])
+    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ``{subs}`` successfully removed")
 
 
 async def list(self, message, args):
