@@ -31,12 +31,20 @@ HOW TO:
 $hartspec sub_name [nb] [show] [novideo] [bad/good]     # with (1 <= nb <= 5)
 ```
 
-### Add or remove from list of SubReddits
-``$hartadd`` or ``$hartremove`` or ``$hartlist`` for more results 
+### Add or remove SubReddit from list
+``$hartadd`` or ``$hartremove`` can add/remove a list of subreddits to your server list.
 
 HOW TO:
 ```bash
-$hartadd good/bad sub_name
+$hartadd good/bad sub_name [sub_name [...]]
+```
+
+### List all SubReddits from list
+``$hartlist`` Will list your server's subreddits
+
+HOW TO:
+```bash
+$hartlist good/bad
 ```
 
 ## SubReddit Error
