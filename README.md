@@ -20,7 +20,7 @@ $hart [show] [novideo] [bad/good]
 
 HOW TO:
 ```bash
-$harts nb [show] [novideo] [bad/good]     # with (1 <= nb <= 10)
+$harts nb [show] [novideo] [bad/good]     # with (1 <= nb <= 5)
 ```
 
 ### Specific results from any SubReddit
@@ -28,7 +28,7 @@ $harts nb [show] [novideo] [bad/good]     # with (1 <= nb <= 10)
 
 HOW TO:
 ```bash
-$hartspec sub_name [nb] [show] [novideo] [bad/good]     # with (1 <= nb <= 10)
+$hartspec sub_name [nb] [show] [novideo] [bad/good]     # with (1 <= nb <= 5)
 ```
 
 ### Add or remove from list of SubReddits
