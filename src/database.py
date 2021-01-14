@@ -102,9 +102,9 @@ async def add(self, message, args):
     subs_ko = " ".join(subs_ko)
 
     if (subs_ko):
-        await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit ``{sub}`` already exists")
+        await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit {subs_ko} already exists")
     if (subs_ok):
-        await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully added")
+        await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs_ok} successfully added")
 
 
 async def remove(self, message, args):
@@ -130,9 +130,9 @@ async def remove(self, message, args):
     subs_ko = " ".join(subs_ko)
 
     if (subs_ko):
-        await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit ``{sub}`` already exists")
+        await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit {subs_ko} already exists")
     if (subs_ok):
-        await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully added")
+        await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs_ok} successfully added")
 
 
 async def list(self, message, args):
