@@ -94,7 +94,7 @@ async def add(self, message, args):
         args = (None, discord_id, sub)
         exec(sql, args)
 
-    subs = " ".join(["``{sub}``" for sub in args[1:]])
+    subs = " ".join([f"``{sub}``" for sub in args[1:]])
     return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ${subs} successfully added")
 
 
@@ -114,7 +114,7 @@ async def remove(self, message, args):
                 WHERE id_discord = ? AND subreddit = ?'''
         exec(sql, (discord_id, sub))
 
-    subs = " ".join(["``{sub}``" for sub in args[1:]])
+    subs = " ".join([f"``{sub}``" for sub in args[1:]])
     return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ``{subs}`` successfully removed")
 
 
