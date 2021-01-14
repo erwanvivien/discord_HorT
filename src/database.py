@@ -92,12 +92,9 @@ async def add(self, message, args):
             return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit already exists")
 
         sql = f'''INSERT INTO {good_or_bad} (id, id_discord, subreddit) VALUES (?, ?, ?)'''
-        args = (None, discord_id, sub)
-        exec(sql, args)
+        exec(sql, (None, discord_id, sub))
 
     subs = " ".join([f"``{subred}``" for subred in args[1:]])
-    print(args)
-    print([f"``{subred}``" for subred in args[1:]])
     return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ${subs} successfully added")
 
 
@@ -118,8 +115,6 @@ async def remove(self, message, args):
         exec(sql, (discord_id, sub))
 
     subs = " ".join([f"``{subred}``" for subred in args[1:]])
-    print(args)
-    print([f"``{subred}``" for subred in args[1:]])
     return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ``{subs}`` successfully removed")
 
 
