@@ -86,16 +86,25 @@ async def add(self, message, args):
     good_or_bad = args[0]
     discord_id = message.guild.id
 
+    subs_ok = []
+    subs_ko = []
     for sub in args[1:]:
         sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
         if exec(sql, (discord_id, sub)):
-            await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit ``{sub}`` already exists")
+            subs_ko += [f"``{sub}``"]
+            continue
 
         sql = f'''INSERT INTO {good_or_bad} (id, id_discord, subreddit) VALUES (?, ?, ?)'''
+        subs_ok += [f"``{sub}``"]
         exec(sql, (None, discord_id, sub))
 
-    subs = " ".join([f"``{subred}``" for subred in args[1:]])
-    await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully added")
+    subs_ok = " ".join(subs_ok)
+    subs_ko = " ".join(subs_ko)
+
+    if (subs_ko):
+        await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit ``{sub}`` already exists")
+    if (subs_ok):
+        await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully added")
 
 
 async def remove(self, message, args):
@@ -105,17 +114,25 @@ async def remove(self, message, args):
     good_or_bad = args[0]
     discord_id = message.guild.id
 
+    subs_ok = []
+    subs_ko = []
     for sub in args[1:]:
         sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
         if not exec(sql, (discord_id, sub)):
-            await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit ``{sub}`` doesn't exist")
+            subs_ko += [f"``{sub}``"]
+            continue
 
-        sql = f'''DELETE FROM {good_or_bad}
-                WHERE id_discord = ? AND subreddit = ?'''
+        sql = f'''DELETE FROM {good_or_bad} WHERE id_discord = ? AND subreddit = ?'''
+        subs_ok += [f"``{sub}``"]
         exec(sql, (discord_id, sub))
 
-    subs = " ".join([f"``{subred}``" for subred in args[1:]])
-    await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully removed")
+    subs_ok = " ".join(subs_ok)
+    subs_ko = " ".join(subs_ko)
+
+    if (subs_ko):
+        await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit ``{sub}`` already exists")
+    if (subs_ok):
+        await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully added")
 
 
 async def list(self, message, args):
