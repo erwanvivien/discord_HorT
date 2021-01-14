@@ -167,6 +167,3 @@ def exec(sql, args=None):
     conn.close()
 
     return res
-
-
-trashy poop UnderTail cursedimages FearMe creepy WTF MakeMeSuffer buttsharpies dragonfuckingcars SubwayCreatures rule34 disturbingpics femalepov hentai trashyboners ttotm selffuck yiff DragonPenis fursuitsex furry titfuck HairyArmpits HairyPitsClub ToeSucking realscatgirls Touhou_NSFW immobile Glorp masserect asseffect
