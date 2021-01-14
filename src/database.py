@@ -89,13 +89,13 @@ async def add(self, message, args):
     for sub in args[1:]:
         sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
         if exec(sql, (discord_id, sub)):
-            return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit already exists")
+            await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit ``{sub}`` already exists")
 
         sql = f'''INSERT INTO {good_or_bad} (id, id_discord, subreddit) VALUES (?, ?, ?)'''
         exec(sql, (None, discord_id, sub))
 
     subs = " ".join([f"``{subred}``" for subred in args[1:]])
-    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully added")
+    await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully added")
 
 
 async def remove(self, message, args):
@@ -108,14 +108,14 @@ async def remove(self, message, args):
     for sub in args[1:]:
         sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
         if not exec(sql, (discord_id, sub)):
-            return await discord_utils.error_message(message, title="Wrong SubReddit", desc="SubReddit doesn't exist")
+            await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit ``{sub}`` doesn't exist")
 
         sql = f'''DELETE FROM {good_or_bad}
                 WHERE id_discord = ? AND subreddit = ?'''
         exec(sql, (discord_id, sub))
 
     subs = " ".join([f"``{subred}``" for subred in args[1:]])
-    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully removed")
+    await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully removed")
 
 
 async def list(self, message, args):
@@ -150,3 +150,6 @@ def exec(sql, args=None):
     conn.close()
 
     return res
+
+
+trashy poop UnderTail cursedimages FearMe creepy WTF MakeMeSuffer buttsharpies dragonfuckingcars SubwayCreatures rule34 disturbingpics femalepov hentai trashyboners ttotm selffuck yiff DragonPenis fursuitsex furry titfuck HairyArmpits HairyPitsClub ToeSucking realscatgirls Touhou_NSFW immobile Glorp masserect asseffect
