@@ -95,7 +95,7 @@ async def add(self, message, args):
         exec(sql, (None, discord_id, sub))
 
     subs = " ".join([f"``{subred}``" for subred in args[1:]])
-    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ${subs} successfully added")
+    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully added")
 
 
 async def remove(self, message, args):
@@ -115,7 +115,7 @@ async def remove(self, message, args):
         exec(sql, (discord_id, sub))
 
     subs = " ".join([f"``{subred}``" for subred in args[1:]])
-    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ``{subs}`` successfully removed")
+    return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs} successfully removed")
 
 
 async def list(self, message, args):
