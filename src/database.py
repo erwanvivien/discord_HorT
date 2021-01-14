@@ -85,6 +85,7 @@ async def add(self, message, args):
 
     good_or_bad = args[0]
     discord_id = message.guild.id
+
     for sub in args[1:]:
         sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
         if exec(sql, (discord_id, sub)):
@@ -94,7 +95,9 @@ async def add(self, message, args):
         args = (None, discord_id, sub)
         exec(sql, args)
 
-    subs = " ".join([f"``{sub}``" for sub in args[1:]])
+    subs = " ".join([f"``{subred}``" for subred in args[1:]])
+    print(args)
+    print([f"``{subred}``" for subred in args[1:]])
     return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ${subs} successfully added")
 
 
@@ -114,7 +117,9 @@ async def remove(self, message, args):
                 WHERE id_discord = ? AND subreddit = ?'''
         exec(sql, (discord_id, sub))
 
-    subs = " ".join([f"``{sub}``" for sub in args[1:]])
+    subs = " ".join([f"``{subred}``" for subred in args[1:]])
+    print(args)
+    print([f"``{subred}``" for subred in args[1:]])
     return await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) ``{subs}`` successfully removed")
 
 
