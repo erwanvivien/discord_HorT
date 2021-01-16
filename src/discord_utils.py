@@ -121,10 +121,11 @@ async def hort(self, message, args, subreddit_def=None):
 
         break
 
+    emoji = " ✅" if good_or_bad == "good" else " ❌"
     if show_subreddit:
-        sub = post_data["subreddit"]
+        sub = post_data["subreddit"] + emoji
     else:
-        sub = "||" + post_data["subreddit"] + "||"
+        sub = "||" + post_data["subreddit"] + emoji + "||"
 
     await message.channel.send(f"/r/{sub}\n" + post_data["url"])
 
