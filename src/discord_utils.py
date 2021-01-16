@@ -35,7 +35,11 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
                           colour=ERROR_COLOR,
                           url=HOWTO_URL)
 
-    await message.channel.send(embed=embed)
+    try:
+        await message.channel.send(embed=embed)
+    except Exception as error:
+        utils.log("error_message", error,
+                  "Could not send **error** message to discord")
 
 
 async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_URL):
@@ -44,18 +48,22 @@ async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_UR
                           colour=BOT_COLOR,
                           url=url)
 
-    await message.channel.send(embed=embed)
+    try:
+        await message.channel.send(embed=embed)
+    except Exception as error:
+        utils.log("error_message", error,
+                  "Could not send message to discord")
 
 
 async def horts(self, message, args, subreddit_def=None):
-    try:
-        nb = int(args[0])
-        if nb > 5:
-            nb = 5
-        elif nb < 0:
-            nb = 0
-    except:
+    if not args[0].isnumeric():
         return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
+
+    nb = int(args[0])
+    if nb > 5:
+        nb = 5
+    elif nb < 0:
+        nb = 0
 
     while nb > 0:
         await hort(self, message, args, subreddit_def)
@@ -99,13 +107,13 @@ async def hort(self, message, args, subreddit_def=None):
                                 ⚠ Consider removing it from your list ! ⚠\n
                                 Actual error was : ``{error}``
                                 """)
+
             if subreddit_def != None:
                 return
             else:
                 continue
 
         posts, post_data = await get(message, js, args)
-        # print(posts)
 
         if not posts:
             continue
@@ -113,15 +121,18 @@ async def hort(self, message, args, subreddit_def=None):
         # print(posts)
         if ("dist" in posts and posts["dist"] == 0 or
                 "error" in posts and posts["error"] != 200):
+            utils.log("hort", "Subreddit not found",
+                      f"SubReddit '{subreddit}' was not found")
             return await error_message(message,
                                        title="Something went wrong",
                                        desc=f"SubReddit '{subreddit}' was not found")
+
         if not post_data:
             continue
 
         break
 
-    emoji = " ✅" if good_or_bad == "good" else " ❌"
+    emoji = " " + "✅" if good_or_bad == "good" else "❌"
     if show_subreddit:
         sub = post_data["subreddit"] + emoji
     else:
@@ -147,13 +158,17 @@ async def get(message, js, args=None):
         post = posts[post_nb]
         post_data = post["data"]
     except Exception as error:
-        print(js)
+        utils.log("get", error, "Json was bad formatted\n++++    " + js)
         return js, error
 
     # print(post)
     if show_novideos and post_data["is_video"]:
+        utils.log("get", "Video Error",
+                  "Got a video but it asked for images only")
         return posts, None
     if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
+        utils.log("get", "Discord link or not an image",
+                  "Got something that differs from an image / video")
         return posts, None
 
     return js["data"], post_data

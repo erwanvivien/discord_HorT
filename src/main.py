@@ -70,11 +70,15 @@ class Client(discord.Client):
         print('================================================================================================')
         print()
 
-        await client.change_presence(
-            status=discord.Status.online,
-            activity=discord.Activity(
-                name="Reddit",
-                type=discord.ActivityType.watching))
+        try:
+            await client.change_presence(
+                status=discord.Status.online,
+                activity=discord.Activity(
+                    name="Reddit",
+                    type=discord.ActivityType.watching))
+        except Exception as error:
+            utils.log("on_ready", error,
+                      "Couldn't change bot's presence")
 
     async def on_message(self, message):
         utils.remove_old_saves()
@@ -82,7 +86,8 @@ class Client(discord.Client):
             return
 
         if db.exists(message.guild.id) == None:
-            print(f"added: {message.guild.id}")
+            utils.log("on_message", "Guild didn't exist",
+                      f"Added guild {message.guild.id} into DB")
             db.add_guild(message.guild.id)
 
         split = message.content.split(' ', 1)  # separate mom?[cmd] from args
@@ -92,7 +97,8 @@ class Client(discord.Client):
         name = discord_utils.author_name(message.author)
 
         if cmd in CMDS:
-            print(f"{name} issued {cmd} command. <{args}>")
+            utils.log("on_message", "Command execution",
+                      f"{name} issued {cmd} command. <{args}>")
             await CMDS[cmd](self, message, args)
 
 

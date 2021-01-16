@@ -8,11 +8,23 @@ import database as db
 import shutil
 
 
+LOG_FILE = "db/log"
+
+if not os.path.exists("db"):
+    os.mkdir("db")
+    log("DB folder", "DB folder did not exist", "Creating DB folder")
+
+
 def get_content(file):
     # Read file content
-    file = open(file, "r")
-    s = file.read()
-    file.close()
+    try:
+        file = open(file, "r")
+        s = file.read()
+        file.close()
+    except Exception as error:
+        log("get_content", error, f"error reading file {file}")
+        return ""
+
     return s
 
 
@@ -54,3 +66,16 @@ def subreddit_json(subreddit):
     f.close()
 
     return r.json()
+
+
+def log(fctname, error, message):
+    now = datetime.datetime.now()
+    log = f"[{now}]: " + \
+        error + '\n' + ('+' * 4) + (' ' * 4) + \
+        fctname + (" " * (20-len(fctname))) + \
+        ': ' + message + '\n'
+
+    print(log)
+    f = open(LOG_FILE, "a+")
+    f.write(log)
+    f.close()
