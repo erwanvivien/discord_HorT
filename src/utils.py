@@ -29,6 +29,7 @@ def get_content(file):
 
 
 def remove_old_saves():
+    # Remove old saves from save folder
     now = datetime.datetime.now()
     halfhour = int(int(now.strftime("%H")) / 2)
 
@@ -41,9 +42,11 @@ def remove_old_saves():
 
 
 def subreddit_json(subreddit):
+    # Get a subreddit from a curl request
     now = datetime.datetime.now()
     halfhour = int(int(now.strftime("%H")) / 2)
 
+    # This is all folder naming for fast removal once deprecated
     foldername = now.strftime("%Y-%m-%d_") + str(halfhour) + "h"
     if not os.path.exists(f"subreddit_saves/{foldername}"):
         remove_old_saves()
@@ -51,16 +54,20 @@ def subreddit_json(subreddit):
 
     path = f"subreddit_saves/{foldername}/{subreddit}.json"
 
+    # If subreddit was already asked in the 2h period, we just return the save
     if os.path.exists(path):
         return json.loads(get_content(path))
 
-    print("Created new file: " + path)
-    headers = {"User-Agent": "discord:798130116491345971:v1 (by /u/Xiaojiba)"}
+    # If it doesn't exist, we request it
+    log("subreddit_json", "Created new file", path)
+    headers = {
+        "User-Agent": "discord:798130116491345971:v1.1 (by /u/Xiaojiba)"}
     r = requests.get(
         f"http://reddit.com/r/{subreddit}/.json?limit=100",
         headers=headers,
         timeout=5)
 
+    # and save it
     f = open(path, "w")
     f.write(r.text)
     f.close()
@@ -71,7 +78,7 @@ def subreddit_json(subreddit):
 def log(fctname, error, message):
     now = datetime.datetime.now()
     log = f"[{now}]: " + \
-        error + '\n' + ('+' * 4) + (' ' * 4) + \
+        str(error) + '\n' + ('+' * 4) + (' ' * 4) + \
         fctname + (" " * (20-len(fctname))) + \
         ': ' + message + '\n'
 

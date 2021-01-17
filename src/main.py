@@ -17,7 +17,7 @@ import database as db
 # from discord_utils import hort
 
 # All the bot ids (dev and current)
-BOT_IDS = []
+BOT_IDS = [798130116491345971]
 # The dev id (Xiaojiba#1407)
 DEV_IDS = [289145021922279425]
 # Error log
@@ -38,6 +38,7 @@ if not os.path.isdir("db_discordhort"):
     os.mkdir("db_discordhort")
 
 
+# All known commands
 CMDS = {
     "$hart": discord_utils.hort,
     "$hort": discord_utils.hort,
@@ -81,27 +82,32 @@ class Client(discord.Client):
                       "Couldn't change bot's presence")
 
     async def on_message(self, message):
-        utils.remove_old_saves()
-        if message.author.id in BOT_IDS:
+        utils.remove_old_saves()                # Remove all archives of old subreddits
+        if message.author.id in BOT_IDS:        # Doesn't do anything if it's a bot message
             return
 
+        # Adds a guild to DB if not present.
         if db.exists(message.guild.id) == None:
             utils.log("on_message", "Guild didn't exist",
                       f"Added guild {message.guild.id} into DB")
             db.add_guild(message.guild.id)
 
+        # Get from message command and args
         split = message.content.split(' ', 1)  # separate mom?[cmd] from args
         cmd = split[0].lower()
         args = split[1].split(' ') if len(split) > 1 else None
 
+        # Get Discord Nick if existant or discord Name
         name = discord_utils.author_name(message.author)
 
+        # Runs command if it's a known command
         if cmd in CMDS:
             utils.log("on_message", "Command execution",
                       f"{name} issued {cmd} command. <{args}>")
             await CMDS[cmd](self, message, args)
 
 
+# Starts the client and creates database if not existant
 db.create()
 client = Client()
 client.run(token)

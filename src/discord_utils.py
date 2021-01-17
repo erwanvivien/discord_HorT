@@ -30,6 +30,7 @@ def author_name(author):
 
 
 async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
+    # Sends error message to discord (red)
     embed = discord.Embed(title=title,
                           description=desc,
                           colour=ERROR_COLOR,
@@ -43,6 +44,7 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
 
 
 async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_URL):
+    # Sends message to discord (bot_color)
     embed = discord.Embed(title=title,
                           description=desc,
                           colour=BOT_COLOR,
@@ -56,6 +58,7 @@ async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_UR
 
 
 async def horts(self, message, args, subreddit_def=None):
+    # Calls hort() many times
     if not args[0].isnumeric():
         return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
 
@@ -71,6 +74,7 @@ async def horts(self, message, args, subreddit_def=None):
 
 
 async def hort_spec(self, message, args):
+    # Calls hort() or horts() with specific sub
     if len(args) > 1 and args[1].isnumeric():
         await horts(self, message, args[1:], args[0])
     else:
@@ -78,6 +82,10 @@ async def hort_spec(self, message, args):
 
 
 async def hort(self, message, args, subreddit_def=None):
+    # Main function
+    # if subreddit_def != None, get a specific sub (from hortspec())
+    # Otherwise we get a random between ["good", "bad"]
+    # Then SQL request all subs in that category, and random in this list
     show_subreddit = (args != None) and ("show" in args)
 
     is_bad = (args != None) and ("bad" in args)
@@ -96,6 +104,7 @@ async def hort(self, message, args, subreddit_def=None):
     subreddits = [e[0] for e in subreddits]
 
     while True:
+        # While error in random
         subreddit = random.choice(
             subreddits) if subreddit_def == None else subreddit_def
         js = utils.subreddit_json(subreddit)
@@ -113,6 +122,7 @@ async def hort(self, message, args, subreddit_def=None):
             else:
                 continue
 
+        # Getter for sub informations
         posts, post_data = await get(message, js, args)
 
         if not posts:
@@ -132,21 +142,24 @@ async def hort(self, message, args, subreddit_def=None):
 
         break
 
+    # Prints with / without spoiler
     emoji = " " + "✅" if good_or_bad == "good" else "❌"
-    if show_subreddit:
-        sub = post_data["subreddit"] + emoji
-    else:
-        sub = "||" + post_data["subreddit"] + emoji + "||"
+
+    sub = post_data["subreddit"] + emoji
+    if not show_subreddit:
+        sub = "||" + sub + "||"
 
     await message.channel.send(f"/r/{sub}\n" + post_data["url"])
 
 
 async def get(message, js, args=None):
+    # Checks if we ask to skip videos
     show_novideos = (args != None) and ("novideo" in args)
 
     if not "data" in js:
         return None, None
 
+    # Try reading a .json from the sub
     try:
         nb_posts = js["data"]["dist"]
         if nb_posts == 0:
@@ -161,7 +174,6 @@ async def get(message, js, args=None):
         utils.log("get", error, "Json was bad formatted\n++++    " + js)
         return js, error
 
-    # print(post)
     if show_novideos and post_data["is_video"]:
         utils.log("get", "Video Error",
                   "Got a video but it asked for images only")
@@ -171,6 +183,7 @@ async def get(message, js, args=None):
                   "Got something that differs from an image / video")
         return posts, None
 
+    # Everything went well, we send the resulting post
     return js["data"], post_data
 
 
