@@ -3,6 +3,7 @@ from sqlite3 import Error
 import os
 
 import discord_utils
+import utils
 
 
 def get_content(file):
@@ -69,11 +70,17 @@ def add_guild(discord_id):
     bads = get_content("bad").split('\n')
 
     for g in goods:
+        if not g:
+            continue
+
         sql = f'''INSERT INTO good (id, id_discord, subreddit) VALUES (?, ?, ?)'''
         args = [None, discord_id, g]
         exec(sql, args)
 
     for b in bads:
+        if not b:
+            continue
+
         sql = f'''INSERT INTO bad (id, id_discord, subreddit) VALUES (?, ?, ?)'''
         args = [None, discord_id, b]
         exec(sql, args)
@@ -89,13 +96,24 @@ async def add(self, message, args):
     subs_ok = []
     subs_ko = []
     for sub in args[1:]:
+        # If an empty arg was passed
+        if not sub:
+            continue
+
+        # Check if sub exists / is accessible
+        if "error" in utils.subreddit_json(sub):
+            await discord_utils.error_message(message, title="Wrong SubReddit",
+                                              desc=f"SubReddit `{sub}` is not accessible\n" +
+                                              f"Check https://reddit.com/r/{sub}/.json\n" +
+                                              f"Error was `" + utils.subreddit_json(sub)["reason"] + '`')
+
         sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
         if exec(sql, (discord_id, sub)):
-            subs_ko += [f"``{sub}``"]
+            subs_ko += [f"`{sub}`"]
             continue
 
         sql = f'''INSERT INTO {good_or_bad} (id, id_discord, subreddit) VALUES (?, ?, ?)'''
-        subs_ok += [f"``{sub}``"]
+        subs_ok += [f"`{sub}`"]
         exec(sql, (None, discord_id, sub))
 
     subs_ok = " ".join(subs_ok)
