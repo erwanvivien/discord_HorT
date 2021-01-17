@@ -29,15 +29,17 @@ def author_name(author):
     return name
 
 
+def create_embed(title, desc, colour=BOT_COLOR, url=HOWTO_URL):
+    return discord.Embed(title=title,
+                         description=desc,
+                         colour=ERROR_COLOR,
+                         url=HOWTO_URL)
+
+
 async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
     # Sends error message to discord (red)
-    embed = discord.Embed(title=title,
-                          description=desc,
-                          colour=ERROR_COLOR,
-                          url=HOWTO_URL)
-
     try:
-        await message.channel.send(embed=embed)
+        return await message.channel.send(embed=create_embed(title, desc, ERROR_COLOR, HOWTO_URL))
     except Exception as error:
         utils.log("error_message", error,
                   "Could not send **error** message to discord")
@@ -45,13 +47,17 @@ async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
 
 async def send_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_URL):
     # Sends message to discord (bot_color)
-    embed = discord.Embed(title=title,
-                          description=desc,
-                          colour=BOT_COLOR,
-                          url=url)
-
     try:
-        await message.channel.send(embed=embed)
+        return await message.channel.send(embed=create_embed(title, desc, BOT_COLOR, HOWTO_URL))
+    except Exception as error:
+        utils.log("error_message", error,
+                  "Could not send message to discord")
+
+
+async def edit_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_URL):
+    # Sends message to discord (bot_color)
+    try:
+        return await message.edit(embed=create_embed(title, desc, BOT_COLOR, HOWTO_URL))
     except Exception as error:
         utils.log("error_message", error,
                   "Could not send message to discord")

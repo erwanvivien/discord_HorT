@@ -14,7 +14,7 @@ def get_content(file):
     return s
 
 
-DB_PATH = "db_discordhort/database.db"
+DB_PATH = "db/database.db"
 
 
 def create():
@@ -93,9 +93,12 @@ async def add(self, message, args):
     good_or_bad = args[0]
     discord_id = message.guild.id
 
-    subs_ok = []
-    subs_ko = []
+    content = ""
+    msg = await discord_utils.send_message(
+        message, title="Adding...", desc=content)
+
     for sub in args[1:]:
+        await discord_utils.edit_message(msg, title="Adding...", desc=content)
         # If an empty arg was passed
         if not sub:
             continue
@@ -109,20 +112,15 @@ async def add(self, message, args):
 
         sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
         if exec(sql, (discord_id, sub)):
-            subs_ko += [f"`{sub}`"]
+            content += f"❌ `/r/{sub}` already present\n"
             continue
 
         sql = f'''INSERT INTO {good_or_bad} (id, id_discord, subreddit) VALUES (?, ?, ?)'''
-        subs_ok += [f"`{sub}`"]
+        content += f"✅ `/r/{sub}` successfully added\n"
+
         exec(sql, (None, discord_id, sub))
 
-    subs_ok = " ".join(subs_ok)
-    subs_ko = " ".join(subs_ko)
-
-    if (subs_ko):
-        await discord_utils.error_message(message, title="Wrong SubReddit", desc=f"SubReddit {subs_ko} already exists")
-    if (subs_ok):
-        await discord_utils.send_message(message, title="Success!", desc=f"SubReddit(s) {subs_ok} successfully added")
+    await discord_utils.edit_message(msg, title="Done", desc=content)
 
 
 async def remove(self, message, args):
