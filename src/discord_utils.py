@@ -32,8 +32,8 @@ def author_name(author):
 def create_embed(title, desc, colour=BOT_COLOR, url=HOWTO_URL):
     return discord.Embed(title=title,
                          description=desc,
-                         colour=ERROR_COLOR,
-                         url=HOWTO_URL)
+                         colour=colour,
+                         url=url)
 
 
 async def error_message(message, title=WRONG_USAGE, desc=HELP_USAGE):
