@@ -171,7 +171,7 @@ async def list(self, message, args):
 
 
 def exec(sql, args=None):
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(DB_PATH)
     if not conn:
         return None
     cur = conn.cursor()
@@ -185,3 +185,7 @@ def exec(sql, args=None):
     conn.close()
 
     return res
+
+
+if not os.path.exists("db"):
+    os.mkdir("db")
