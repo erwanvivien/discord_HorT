@@ -10,10 +10,6 @@ import shutil
 
 LOG_FILE = "db/log"
 
-if not os.path.exists("db"):
-    os.mkdir("db")
-    log("DB folder", "DB folder did not exist", "Creating DB folder")
-
 
 def get_content(file):
     # Read file content
@@ -84,10 +80,15 @@ def log(fctname, error, message):
 
     print(log)
 
-    if not os.path.exists(LOG_FILE):
-        f = open(LOG_FILE, "w")
-    else:
-        f = open(LOG_FILE, "a+")
+    f = open(LOG_FILE, "a+")
 
     f.write(log)
     f.close()
+
+
+if not os.path.exists("db"):
+    os.mkdir("db")
+    f = open(LOG_FILE, "w")
+    f.close()
+
+    log("DB folder", "DB folder did not exist", "Creating DB folder")
