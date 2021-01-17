@@ -136,6 +136,9 @@ async def remove(self, message, args):
 
     for sub in args[1:]:
         await discord_utils.edit_message(msg, title="Adding...", desc=content)
+        # If an empty arg was passed
+        if not sub:
+            continue
 
         sql = f'''SELECT subreddit FROM {good_or_bad} WHERE {good_or_bad}.id_discord = ? AND subreddit LIKE ?'''
         if not exec(sql, (discord_id, sub)):
