@@ -83,6 +83,11 @@ def log(fctname, error, message):
         ': ' + message + '\n'
 
     print(log)
-    f = open(LOG_FILE, "a+")
+
+    if not os.path.exists(LOG_FILE):
+        f = open(LOG_FILE, "w")
+    else:
+        f = open(LOG_FILE, "a+")
+
     f.write(log)
     f.close()
