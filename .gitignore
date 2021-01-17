@@ -136,3 +136,5 @@ saves
 subreddit_saves
 
 database.db
+db
+log
