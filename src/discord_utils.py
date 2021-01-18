@@ -150,6 +150,8 @@ async def hort(self, message, args, subreddit_def=None):
 
     # Prints with / without spoiler
     emoji = " " + "✅" if good_or_bad == "good" else "❌"
+    if subreddit_def:
+        emoji = " " + "⁉"
 
     sub = post_data["subreddit"] + emoji
     if not show_subreddit:
