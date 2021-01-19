@@ -16,17 +16,11 @@ VALID_COLOR = discord.Colour(0x55da50)
 REDDIT = ["good", "bad"]
 
 
-def author_name(author):
+def author_name(author, discriminator=True):
     # Get nick from msg author (discord) if exists
-    name = None
-    try:
-        name = author.nick
-    except:
-        name = author.name
-
-    if not name:
-        return author.name
-    return name
+    if not discriminator:
+        return author.display_name
+    return f"{author.display_name}#{author.discriminator}"
 
 
 def create_embed(title, desc, colour=BOT_COLOR, url=HOWTO_URL):
@@ -159,9 +153,9 @@ async def hort(self, message, args, subreddit_def=None):
     if subreddit_def:
         emoji = " " + "⁉"
 
-    sub = post_data["subreddit"] + emoji
+    sub = post_data["subreddit"] + f" {emoji} "
     if not show_subreddit:
-        sub = "||" + sub + "||"
+        sub = "|| " + sub + " || from " + author_name(message.author)
 
     await message.channel.send(f"/r/{sub}\n" + post_data["url"])
 

@@ -98,7 +98,8 @@ class Client(discord.Client):
         args = split[1].split(' ') if len(split) > 1 else None
 
         # Get Discord Nick if existant or discord Name
-        name = discord_utils.author_name(message.author)
+        name = discord_utils.author_name(message.author, False)
+        name = f"{message.author.display_name}#{message.author.discriminator}"
 
         # Runs command if it's a known command
         if cmd in CMDS:
