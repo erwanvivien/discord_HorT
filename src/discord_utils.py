@@ -109,7 +109,8 @@ async def hort(self, message, args, subreddit_def=None):
     subreddits = db.exec(sql)
     subreddits = [e[0] for e in subreddits]
 
-    while True:
+    i = 0
+    for i in range(1, 15):
         # While error in random
         subreddit = random.choice(
             subreddits) if subreddit_def == None else subreddit_def
@@ -118,9 +119,9 @@ async def hort(self, message, args, subreddit_def=None):
             error = js["reason"]
             await error_message(message,
                                 title="SubReddit error",
-                                desc=f"""Subreddit ``{subreddit}`` is currently not available, check if quanrantined, banned or private.
+                                desc=f"""Subreddit `{subreddit} is currently not available, check if quanrantined, banned or private.
                                 ⚠ Consider removing it from your list ! ⚠\n
-                                Actual error was : ``{error}``
+                                Actual error was : `{error}`
                                 """)
 
             if subreddit_def != None:
@@ -138,15 +139,20 @@ async def hort(self, message, args, subreddit_def=None):
         if ("dist" in posts and posts["dist"] == 0 or
                 "error" in posts and posts["error"] != 200):
             utils.log("hort", "Subreddit not found",
-                      f"SubReddit '{subreddit}' was not found")
+                      f"SubReddit `{subreddit}` was not found")
             return await error_message(message,
                                        title="Something went wrong",
-                                       desc=f"SubReddit '{subreddit}' was not found")
+                                       desc=f"SubReddit `{subreddit}` was not found")
 
         if not post_data:
             continue
 
         break
+
+    if i == 14:  # End of the for in the said bounds => No images were found
+        return await error_message(message,
+                                   title="Something went wrong",
+                                   desc=f"SubReddit `{subreddit}` probably doesn't have images")
 
     # Prints with / without spoiler
     emoji = " " + "✅" if good_or_bad == "good" else "❌"
