@@ -186,7 +186,7 @@ async def get(message, js, args=None):
         utils.log("get", "Video Error",
                   "Got a video but it asked for images only")
         return posts, None
-    if post_data["url"][-1] == '/' or "discord" in post_data["url"]:
+    if post_data["url"][-1] == '/' or "discord" in post_data["url"] or "gallery" in post_data["url"]:
         utils.log("get", "Discord link or not an image",
                   "Got something that differs from an image / video")
         return posts, None
