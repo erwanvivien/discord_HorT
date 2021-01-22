@@ -20,7 +20,7 @@ def author_name(author, discriminator=True):
     # Get nick from msg author (discord) if exists
     if not discriminator:
         return author.display_name
-    return f"{author.display_name}#{author.discriminator}"
+    return f"{author.name}#{author.discriminator}"
 
 
 def create_embed(title, desc, colour=BOT_COLOR, url=HOWTO_URL):
@@ -59,8 +59,8 @@ async def edit_message(message, title=WRONG_USAGE, desc=HELP_USAGE, url=HOWTO_UR
 
 async def horts(self, message, args, subreddit_def=None):
     # Calls hort() many times
-    if not args[0].isnumeric():
-        return await error_message(message, title="Wrong usage", desc="1st argument must be an integer")
+    if not args or not args[0].isnumeric():
+        args = [5] + args if args else [5]
 
     nb = int(args[0])
     if nb > 5:
