@@ -1,0 +1,16 @@
+jobs:
+  test:
+    name: Test on node ${{ matrix.version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        version: v1.1
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: npm install, build and test
+      run: |
+        pip install -r requirements.txt
+        python3 src/main.py
