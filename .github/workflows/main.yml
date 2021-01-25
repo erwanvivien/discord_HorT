@@ -28,7 +28,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Install dependencies
         run: |
-          python3 install pip
+          python3 -m pip install
           pip install -r requirements.txt
 
       # Runs a set of commands using the runners shell
