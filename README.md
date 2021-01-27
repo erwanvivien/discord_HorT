@@ -1,5 +1,7 @@
 # discord-HorT
-A Heads or Tails discord bot
+A Heads or Tails discord bot.
+
+[Invite my the bot to your discord :)](https://discord.com/api/oauth2/authorize?client_id=798130116491345971&permissions=2048&scope=bot)
 
 ## Usages
 - [``$hart``](https://github.com/erwanvivien/discord-HorT#default-command)
