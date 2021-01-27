@@ -57,7 +57,7 @@ def subreddit_json(subreddit):
     # If it doesn't exist, we request it
     log("subreddit_json", "Created new file", path)
     headers = {
-        "User-Agent": "discord:798130116491345971:v1.1 (by /u/Xiaojiba)"}
+        "User-Agent": "discord:798130116491345971:v1.2 (by /u/Xiaojiba)"}
     r = requests.get(
         f"http://reddit.com/r/{subreddit}/.json?limit=100",
         headers=headers,
