@@ -155,9 +155,10 @@ async def hort(self, message, args, subreddit_def=None):
 
     sub = post_data["subreddit"] + f" {emoji} "
     if not show_subreddit:
-        sub = "|| " + sub + " || from " + author_name(message.author)
+        sub = "|| " + sub + " ||"
 
-    await message.channel.send(f"/r/{sub}\n" + post_data["url"])
+    print(f"/r/{sub} from {author_name(message.author)}\n" + post_data["url"])
+    await message.channel.send(f"/r/{sub} from {author_name(message.author)}\n" + post_data["url"])
 
 
 async def get(message, js, args=None):
