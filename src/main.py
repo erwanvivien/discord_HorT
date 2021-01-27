@@ -46,6 +46,9 @@ CMDS = {
     "$harts": discord_utils.horts,
     "$horts": discord_utils.horts,
 
+    "$hortclean": discord_utils.horts,
+    "$hartclean": discord_utils.horts,
+
     # "$hortlim": discord_utils.hort_lim,
     # "$hartlim": discord_utils.hort_lim,
 
@@ -104,6 +107,9 @@ class Client(discord.Client):
         if cmd in CMDS:
             utils.log("on_message", "Command execution",
                       f"{name} issued {cmd} command. <{args}>")
+            if (cmd in ['$hortclean', '$hartclean']):
+                args = ["good"] + (args if args else [])
+
             await CMDS[cmd](self, message, args)
 
 
