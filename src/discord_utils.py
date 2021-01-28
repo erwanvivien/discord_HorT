@@ -113,7 +113,7 @@ async def hort(self, message, args, subreddit_def=None):
             error = js["reason"]
             await error_message(message,
                                 title="SubReddit error",
-                                desc=f"""Subreddit `{subreddit} is currently not available, check if quanrantined, banned or private.
+                                desc=f"""Subreddit `{subreddit}` is currently not available, check if quanrantined, banned or private.
                                 ⚠ Consider removing it from your list ! ⚠\n
                                 Actual error was : `{error}`
                                 """)
