@@ -68,8 +68,9 @@ async def horts(self, message, args, subreddit_def=None):
     elif nb < 0:
         nb = 0
 
-    while nb > 0:
-        await hort(self, message, args, subreddit_def)
+    good = True
+    while nb > 0 and good:
+        good = await hort(self, message, args, subreddit_def)
         nb -= 1
 
 
@@ -119,7 +120,7 @@ async def hort(self, message, args, subreddit_def=None):
                                 """)
 
             if subreddit_def != None:
-                return
+                return False
             else:
                 continue
 
@@ -134,9 +135,10 @@ async def hort(self, message, args, subreddit_def=None):
                 "error" in posts and posts["error"] != 200):
             utils.log("hort", "Subreddit not found",
                       f"SubReddit `{subreddit}` was not found")
-            return await error_message(message,
-                                       title="Something went wrong",
-                                       desc=f"SubReddit `{subreddit}` was not found")
+            await error_message(message,
+                                title="Something went wrong",
+                                desc=f"SubReddit `{subreddit}` was not found")
+            return subreddit_def != None
 
         if not post_data:
             continue
@@ -159,6 +161,7 @@ async def hort(self, message, args, subreddit_def=None):
 
     print(f"/r/{sub} from {author_name(message.author)}\n" + post_data["url"])
     await message.channel.send(f"/r/{sub} from {author_name(message.author)}\n" + post_data["url"])
+    return True
 
 
 async def get(message, js, args=None):
